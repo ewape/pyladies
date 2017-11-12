@@ -143,7 +143,7 @@ def get_pilots_bmi(starship = 'Millennium Falcon', debug = False):
     return pilots
 
 
-def select_value(values, intro):
+def select_value(values = [], intro = ''):
     message = intro + '\n'
 
     for i, value in enumerate(values):
@@ -155,6 +155,8 @@ def select_value(values, intro):
 
     try:
         selected = int(input(message))
+        if selected not in range(1, len(values)):
+            raise ValueError('Bad input!')
         option = values[selected-1]
         print('Selected {}: {}'.format(values.index(option)+1, option))
     except:
@@ -187,13 +189,10 @@ def get_keys(type = 'planets', key = 'name', page_no = 1):
 
 
 def start():
-    type = input('1: get_species_people,\n2: get_episode_species,\n3: get_residents,\n4: get_pilots_bmi\n')
-    try:
-        selected = int(type)
-    except:
-        selected = randint(1, 4)
-        print('Invalid input. Selected {}'.format(selected))
-    if selected == 1:
+    types = ['get_species_people', 'get_episode_species', 'get_residents', 'get_pilots_bmi']
+    selected = types.index(select_value(types, 'Start search: '))
+
+    if selected == 0:
         if 'species' not in hints:
             hints['species'] = get_keys('species', 'name') or []
 
@@ -201,7 +200,7 @@ def start():
         # debug = input('Debug? y/n: ') == 'y'
         get_species_people(species)
 
-    elif selected == 2:
+    elif selected == 1:
         if 'films' not in hints:
             hints['films'] = get_keys('films', 'episode_id') or []
             hints['films'].sort()
@@ -210,7 +209,7 @@ def start():
         # debug = input('Debug? y/n: ') == 'y'
         get_episode_species(episode_id)
 
-    elif selected == 3:
+    elif selected == 2:
         if 'planets' not in hints:
             hints['planets'] = get_keys('planets', 'name') or []
 
@@ -218,7 +217,7 @@ def start():
         # debug = input('Debug? y/n: ') == 'y'
         get_residents(planet)
 
-    elif selected == 4:
+    elif selected == 3:
         if 'starships' not in hints:
             hints['starships'] = get_keys('starships', 'name') or []
 
@@ -226,7 +225,7 @@ def start():
         # debug = input('Debug? y/n: ') == 'y'
         get_pilots_bmi(starship)
 
-    again = input('Try again? y/n: ') == 'y'
+    again = input('Try again? (y/n): ') == 'y'
     if again:
         start()
 
