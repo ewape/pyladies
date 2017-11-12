@@ -232,10 +232,3 @@ def start():
 
 
 start()
-
-# get_species_people('Gungan')
-
-# get_episode_species(4)
-# get_residents('Tatooine')
-# get_pilots_bmi('Millennium Falcon')
-
